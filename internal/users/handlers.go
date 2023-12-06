@@ -5,7 +5,7 @@ import (
 
 	"github.com/asteroid2k/polln-api/api"
 	"github.com/asteroid2k/polln-api/internal/config"
-	"github.com/asteroid2k/polln-api/internal/helpers"
+	"github.com/asteroid2k/polln-api/internal/utils/helpers"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -22,15 +22,20 @@ func CreateUser(app *config.App) http.HandlerFunc {
 		if !ok {
 			return
 		}
+		vErrors, ok := app.Validator.ValidateStruct(userData)
+		if !ok {
+			helpers.SendJSON(w, helpers.NewValidationErrorResponse(vErrors, nil))
+			return
+		}
 
 		helpers.SendJSON(w, helpers.AppResponse{Data: userData})
 	}
 }
 
 func RegisterRoutes(app *config.App, r chi.Router) {
-	r.Group(func(r chi.Router) {
-		r.Post("/users", CreateUser(app))
-		r.Get("/users", GetUsers(app))
+	r.Route("/users", func(r chi.Router) {
+		r.Post("/", CreateUser(app))
+		r.Get("/", GetUsers(app))
 	})
 
 }

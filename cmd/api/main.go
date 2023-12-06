@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/asteroid2k/polln-api/internal/config"
+	"github.com/asteroid2k/polln-api/internal/utils/helpers"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -19,7 +20,10 @@ func init() {
 
 func main() {
 	env := config.ParseEnv()
-	app := &config.App{Env: env}
+	val, trans := helpers.NewValidator()
+
+	app := &config.App{Env: env, Validator: helpers.AppValidator{Validate: val, Translator: trans}}
+
 	if env.ReleaseStage == "development" {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}

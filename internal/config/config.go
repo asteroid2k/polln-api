@@ -3,10 +3,13 @@ package config
 import (
 	"os"
 	"strconv"
+
+	"github.com/asteroid2k/polln-api/internal/utils/helpers"
 )
 
 type App struct {
-	Env *Env
+	Env       *Env
+	Validator helpers.AppValidator
 }
 
 type DBConfig struct {

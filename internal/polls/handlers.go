@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/asteroid2k/polln-api/internal/config"
-	"github.com/asteroid2k/polln-api/internal/helpers"
+	"github.com/asteroid2k/polln-api/internal/utils/helpers"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -16,8 +16,8 @@ func GetPolls(app *config.App) http.HandlerFunc {
 }
 
 func RegisterRoutes(app *config.App, r chi.Router) {
-	r.Group(func(r chi.Router) {
-		r.Get("/polls", GetPolls(app))
+	r.Route("/polls", func(r chi.Router) {
+		r.Get("/", GetPolls(app))
 	})
 
 }

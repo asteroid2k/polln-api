@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/asteroid2k/polln-api/internal/constants"
+	"github.com/asteroid2k/polln-api/internal/utils/constants"
 	"github.com/rs/zerolog/log"
 )
 
@@ -18,8 +18,8 @@ type AppResponse struct {
 }
 
 type ValidationError struct {
-	Field string
-	Error string
+	Field   string `json:"field"`
+	Message string `json:"message"`
 }
 
 func SendJSON(w http.ResponseWriter, payload AppResponse) error {
@@ -63,7 +63,7 @@ func ParseJSON(w http.ResponseWriter, data io.ReadCloser, dst any) bool {
 
 	case errors.As(err, &unmarshalTypeError):
 		if unmarshalTypeError.Field != "" {
-			valErrors := []ValidationError{{Field: unmarshalTypeError.Field, Error: "Invalid type"}}
+			valErrors := []ValidationError{{Field: unmarshalTypeError.Field, Message: "Invalid type"}}
 			SendJSON(w, NewValidationErrorResponse(valErrors, nil))
 			break
 		}
