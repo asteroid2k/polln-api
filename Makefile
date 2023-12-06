@@ -1,2 +1,2 @@
-run:
+run-dev:
 	go run ./cmd/api

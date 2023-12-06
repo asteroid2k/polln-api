@@ -1,6 +1,12 @@
 package api
 
+type CreateUserRequest struct {
+	Username   string `json:"username"`
+	Passphrase string `json:"passphrase"`
+	Email      string `json:"email"`
+}
+
 type UserResponse struct {
-	userId   string
-	username string
+	UserId   string
+	Username string
 }
